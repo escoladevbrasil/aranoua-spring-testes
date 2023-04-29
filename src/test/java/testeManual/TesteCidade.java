@@ -8,45 +8,98 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 
 import model.Cidade;
+import util.JPAUtil;
 
 public class TesteCidade {
 
-    public static void main(String[] args) {
 
-//        Inicialização
-        EntityManagerFactory fabrica =
-                Persistence.createEntityManagerFactory("springtestes-jpa-pu");
+    private static void inserirNoBancoDeDados() {
 
-        EntityManager em = fabrica.createEntityManager();
+//        Obtenho a EntityManager
+        EntityManager em = JPAUtil.getEntityManager();
 
-//        Insere um registo no banco de dados.
+        Cidade cidade = new Cidade();
+        cidade.setNome("Sao Paulo");
+        cidade.setEstado("Sao Paulo");
 
-//        Cidade cidade = new Cidade();
-//        cidade.setNome("Manaus");
-//        cidade.setEstado("Amazonas");
-//
-//        em.getTransaction().begin();
-//
-//        em.persist(cidade);
-//
-//        em.getTransaction().commit();
+        em.getTransaction().begin();
 
-//        Listar os registros no banco de dados
+        em.persist(cidade);
 
-//      SQL (Structured Query Language): select id,nome,estado from cidade;
+        em.getTransaction().commit();
+
+        em.close();
+
+    }
+
+
+    private static void listarDoBancoDeDados() {
+
+        //      SQL (Structured Query Language): select id,nome,estado from cidade;
 //      JPQL (Java Persistence Query Language): select cidade from Cidade cidade
+
+        EntityManager em = JPAUtil.getEntityManager();
 
         Query consulta = em.createQuery("select cidade from Cidade cidade");
 
         List<Cidade> cidades = consulta.getResultList();
 
         for(Cidade c:cidades){
-            System.out.println("Nome:"+c.getNome()+" Estado:"+c.getEstado());
+            System.out.println("Id:"+c.getId()+" Nome:"+c.getNome()+" Estado:"+c.getEstado());
         }
 
+        em.close();
 
+    }
+
+    private static void consultarEspecificoDoBancoDeDados() {
+
+        EntityManager em = JPAUtil.getEntityManager();
+
+        Cidade cidadeEncontrada = em.find(Cidade.class,5L);
+
+        System.out.println("Cidade encontrada:"+cidadeEncontrada.getNome());
 
         em.close();
+
     }
+
+
+    private static void removerDoBancoDeDados() {
+
+        EntityManager em = JPAUtil.getEntityManager();
+
+        em.getTransaction().begin();
+
+        Cidade cidadeEncontrada=em.find(Cidade.class,5L);
+
+        em.remove(cidadeEncontrada);
+
+        em.getTransaction().commit();
+
+        em.close();
+
+    }
+
+    public static void main(String[] args) {
+
+        // Insere um registro no banco de dados.
+
+        inserirNoBancoDeDados();
+
+        // Listar os registros no banco de dados
+
+        listarDoBancoDeDados();
+
+        // Consultar um registro específico no banco de dados
+
+        consultarEspecificoDoBancoDeDados();
+
+        // Remover registros do banco de dados
+
+        removerDoBancoDeDados();
+
+    }
+
 
 }
