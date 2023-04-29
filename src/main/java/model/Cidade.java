@@ -14,6 +14,8 @@ public class Cidade {
     private String nome;
     private String estado;
 
+    private String siglaEstado;
+
     public Long getId() {
         return id;
     }
