@@ -8,19 +8,41 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 
 import model.Cidade;
+import model.Estado;
 import util.JPAUtil;
 
 public class TesteCidade {
 
-
-    private static void inserirNoBancoDeDados() {
+    private static void inserirNoBancoDeDadosEstado() {
 
 //        Obtenho a EntityManager
         EntityManager em = JPAUtil.getEntityManager();
 
+        Estado estado = new Estado();
+        estado.setNome("Sao Paulo");
+        estado.setSigla("SP");
+
+        em.getTransaction().begin();
+
+        em.persist(estado);
+
+        em.getTransaction().commit();
+
+        em.close();
+
+    }
+
+
+    private static void inserirNoBancoDeDadosCidade() {
+
+//        Obtenho a EntityManager
+        EntityManager em = JPAUtil.getEntityManager();
+
+        Estado estado = em.find(Estado.class,1L);
+
         Cidade cidade = new Cidade();
         cidade.setNome("Sao Paulo");
-        cidade.setEstado("Sao Paulo");
+        cidade.setEstado(estado);
 
         em.getTransaction().begin();
 
@@ -83,21 +105,26 @@ public class TesteCidade {
 
     public static void main(String[] args) {
 
-        // Insere um registro no banco de dados.
 
-        inserirNoBancoDeDados();
+        // Insere um registro no banco de dados Estado.
+
+//        inserirNoBancoDeDadosEstado();
+
+        // Insere um registro no banco de dados Cidade.
+
+        inserirNoBancoDeDadosCidade();
 
         // Listar os registros no banco de dados
 
-        listarDoBancoDeDados();
+//        listarDoBancoDeDados();
 
         // Consultar um registro específico no banco de dados
 
-        consultarEspecificoDoBancoDeDados();
+//        consultarEspecificoDoBancoDeDados();
 
         // Remover registros do banco de dados
 
-        removerDoBancoDeDados();
+//        removerDoBancoDeDados();
 
     }
 

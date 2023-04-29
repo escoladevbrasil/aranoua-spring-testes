@@ -4,23 +4,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 
 @Entity
-public class Cidade {
-
-
+public class Estado {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
-
-    @ManyToOne
-    private Estado estado;
-//            ManyToOne
-//          Muitos para Um
-//    Cidade (*) -- (1) Estado
+    private String sigla;
 
     public Long getId() {
         return id;
@@ -38,11 +30,11 @@ public class Cidade {
         this.nome = nome;
     }
 
-    public Estado getEstado() {
-        return estado;
+    public String getSigla() {
+        return sigla;
     }
 
-    public void setEstado(Estado estado) {
-        this.estado = estado;
+    public void setSigla(String sigla) {
+        this.sigla = sigla;
     }
 }
