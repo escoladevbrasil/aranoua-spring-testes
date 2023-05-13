@@ -2,27 +2,36 @@ package testeManual;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+
 import dao.CidadeDao;
 import model.Cidade;
+import util.JPAUtil;
 
 public class TesteCidadeDao {
 
 
     private static void inserirDao(){
 
-        CidadeDao cidadeDao = new CidadeDao();
+        EntityManager em = JPAUtil.getEntityManager();
+        CidadeDao cidadeDao = new CidadeDao(em);
 
         Cidade cidade = new Cidade();
+        cidade.setNome("Vitoria");
 
-        cidade.setNome("Campinas");
-
+        em.getTransaction().begin();
         cidadeDao.inserir(cidade);
+        em.getTransaction().commit();
+
+        em.close();
+
 
     }
 
     private static void listarDao() {
 
-        CidadeDao cidadeDao = new CidadeDao();
+        EntityManager em = JPAUtil.getEntityManager();
+        CidadeDao cidadeDao = new CidadeDao(em);
 
         List<Cidade> cidades= cidadeDao.listar();
 
@@ -30,33 +39,43 @@ public class TesteCidadeDao {
             System.out.println(c.getId()+" - "+c.getNome());
         }
 
+        em.close();
+
     }
 
 
     private static void consultarDao(){
 
-        CidadeDao cidadeDao = new CidadeDao();
+        EntityManager em = JPAUtil.getEntityManager();
+        CidadeDao cidadeDao = new CidadeDao(em);
 
-        Cidade cidade = cidadeDao.consultar(8L);
+        Cidade cidade = cidadeDao.consultar(9L);
 
         System.out.println(cidade.getNome());
+
+        em.close();
 
     }
 
     private static void removerDao(){
 
-        CidadeDao cidadeDao = new CidadeDao();
+        EntityManager em = JPAUtil.getEntityManager();
+        CidadeDao cidadeDao = new CidadeDao(em);
 
-        cidadeDao.remover(8L);
+        em.getTransaction().begin();
+        cidadeDao.remover(7L);
+        em.getTransaction().commit();
+
+        em.close();
+
     }
 
 
 
     public static void main(String[] args) {
 
-
-//        inserirDao();
-//        consultarDao();
+        inserirDao();
+        consultarDao();
         removerDao();
         listarDao();
 
