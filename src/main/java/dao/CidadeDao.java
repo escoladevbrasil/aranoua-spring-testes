@@ -6,8 +6,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import model.Cidade;
-import model.Estado;
-import util.JPAUtil;
 
 public class CidadeDao {
     private EntityManager em;
