@@ -11,56 +11,36 @@ import util.JPAUtil;
 
 public class CidadeDao {
 
+    private EntityManager em;
+
+    public CidadeDao(EntityManager em) {
+        this.em = em;
+    }
+
     public void inserir(Cidade cidade){
-
-        EntityManager em = JPAUtil.getEntityManager();
-
-        em.getTransaction().begin();
 
         em.persist(cidade);
 
-        em.getTransaction().commit();
-
-        em.close();
     }
 
     public List<Cidade> listar(){
 
-        EntityManager em = JPAUtil.getEntityManager();
-
         Query consulta = em.createQuery("select cidade from Cidade cidade");
 
-        List<Cidade> cidades = consulta.getResultList();
+        return consulta.getResultList();
 
-        em.close();
-
-        return cidades;
     }
 
     public Cidade consultar(Long id){
 
-        EntityManager em = JPAUtil.getEntityManager();
-
-        Cidade cidadeEncontrada = em.find(Cidade.class,id);
-
-        em.close();
-
-        return cidadeEncontrada;
+       return em.find(Cidade.class,id);
 
     }
 
     public void remover(Long id){
-        EntityManager em = JPAUtil.getEntityManager();
 
-        em.getTransaction().begin();
+        em.remove(em.find(Cidade.class,id));
 
-        Cidade cidadeEncontrada=em.find(Cidade.class,id);
-
-        em.remove(cidadeEncontrada);
-
-        em.getTransaction().commit();
-
-        em.close();
     }
 
 
